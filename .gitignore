@@ -1,0 +1,3 @@
+*.log
+arch-install.log
+post linux install/arch-install.log

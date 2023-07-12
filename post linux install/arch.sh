@@ -70,7 +70,7 @@ echo "#############################################"
 echo "###           GIT CONFIGURATION           ###"
 echo "#############################################"
 
-echo "Would you like to configure git? [y/n/c]"
+echo "Would you like to configure git? [y/n]"
 read configure_git
 
 if [[ $configure_git == "y" || $configure_git == "Y" ]]; then
@@ -84,7 +84,7 @@ if [[ $configure_git == "y" || $configure_git == "Y" ]]; then
     git config --global user.email "$git_email"
 
     log "$COK - Successfully configured git"
-elif [[ $accept_changes == "n" || $configure_git == "N" ]]; then
+elif [[ $configure_git == "n" || $configure_git == "N" ]]; then
     clear
     log "$CWE - Skipped git configuration"
 else 
@@ -103,7 +103,7 @@ read zsh_config
 
 if [[ $zsh_config == "y" || $zsh_config == "Y" ]]; then
     log "$CNT - Starting ohmyzsh install"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    zsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     log "$COK - Completed ohmyzsh install"
     echo -e "$CNT - You can find built-in ohmyzsh themes here: https://github.com/ohmyzsh/ohmyzsh/wiki/Themes"
     echo -e "$CIN - Which theme would you like to use?"
@@ -113,10 +113,8 @@ if [[ $zsh_config == "y" || $zsh_config == "Y" ]]; then
     # Update the Zsh configuration file
     sed -i "s/^ZSH_THEME=.*/ZSH_THEME=\"$new_theme\"/" ~/.zshrc
 
-    # Reload the Zsh configuration
-    source ~/.zshrc
-
     log "$COK - Successfully configured ohmyzsh"
+    exec zsh
 elif [[ $zsh_config == "n" || $zsh_config == "N" ]]; then
     clear
     log "$CWE - Skipped zsh configuration"
@@ -124,5 +122,5 @@ else
     log "$CER - Option doesn't exist. Exiting..."
     exit 1
 fi
-
+clear
 log "$COK - Script finished successfully. Exiting..."

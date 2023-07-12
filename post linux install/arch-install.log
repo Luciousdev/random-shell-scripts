@@ -110,3 +110,111 @@ Do you accept these changes? [y/n/c]
 e
 
 
+[[1;36mNOTE[0m] - yay is already installed
+[[1;36mNOTE[0m] - The script will install the following packages:
+- visual-studio-code-bin
+- google-chrome
+- git
+- discord
+- nodejs
+- npm
+- steam
+- obs-studio
+- nano
+- zsh
+Do you accept these changes? [y/n/c]
+ - Continuining script. Not this can cause bugs...
+[[1;31mERROR[0m] - Option doesn't exist. Exiting...
+[[1;36mNOTE[0m] - yay is already installed
+[[1;36mNOTE[0m] - The script will install the following packages:
+- visual-studio-code-bin
+- google-chrome
+- git
+- discord
+- nodejs
+- npm
+- steam
+- obs-studio
+- nano
+- zsh
+Do you accept these changes? [y/n/c]
+ - Continuining script. Not this can cause bugs...
+ - Skipped git configuration
+[[1;36mNOTE[0m] - Starting ohmyzsh install
+[[1;32mOK[0m] - Completed ohmyzsh install
+[[1;36mNOTE[0m] - Loading default config now
+[[1;32mOK[0m] - Successfully configured ohmyzsh
+[[1;32mOK[0m] - Script finished successfully. Exiting...
+[[1;36mNOTE[0m] - yay is already installed
+[[1;36mNOTE[0m] - The script will install the following packages:
+- visual-studio-code-bin
+- google-chrome
+- git
+- discord
+- nodejs
+- npm
+- steam
+- obs-studio
+- nano
+- zsh
+Do you accept these changes? [y/n/c]
+ - Continuining script. Not this can cause bugs...
+[[1;31mERROR[0m] - Option doesn't exist. Exiting...
+[[1;36mNOTE[0m] - yay is already installed
+[[1;36mNOTE[0m] - The script will install the following packages:
+- visual-studio-code-bin
+- google-chrome
+- git
+- discord
+- nodejs
+- npm
+- steam
+- obs-studio
+- nano
+- zsh
+Do you accept these changes? [y/n/c]
+ - Continuining script. Not this can cause bugs...
+ - Skipped git configuration
+[[1;36mNOTE[0m] - Starting ohmyzsh install
+[[1;32mOK[0m] - Completed ohmyzsh install
+[[1;36mNOTE[0m] - Loading default config now
+[[1;32mOK[0m] - Successfully configured ohmyzsh
+[[1;32mOK[0m] - Script finished successfully. Exiting...
+[[1;36mNOTE[0m] - yay is already installed
+[[1;36mNOTE[0m] - The script will install the following packages:
+- visual-studio-code-bin
+- google-chrome
+- git
+- discord
+- nodejs
+- npm
+- steam
+- obs-studio
+- nano
+- zsh
+Do you accept these changes? [y/n/c]
+ - Continuining script. Not this can cause bugs...
+ - Skipped git configuration
+[[1;36mNOTE[0m] - Starting ohmyzsh install
+[[1;32mOK[0m] - Completed ohmyzsh install
+[[1;36mNOTE[0m] - Loading default config now
+[[1;32mOK[0m] - Successfully configured ohmyzsh
+[[1;36mNOTE[0m] - yay is already installed
+[[1;36mNOTE[0m] - The script will install the following packages:
+- visual-studio-code-bin
+- google-chrome
+- git
+- discord
+- nodejs
+- npm
+- steam
+- obs-studio
+- nano
+- zsh
+Do you accept these changes? [y/n/c]
+ - Continuining script. Not this can cause bugs...
+ - Skipped git configuration
+[[1;36mNOTE[0m] - Starting ohmyzsh install
+[[1;32mOK[0m] - Completed ohmyzsh install
+[[1;36mNOTE[0m] - Loading default config now
+[[1;32mOK[0m] - Successfully configured ohmyzsh
