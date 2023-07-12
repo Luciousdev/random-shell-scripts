@@ -22,6 +22,8 @@ yay_packages=(
     "obs-studio"
     "nano"
     "zsh"
+    "vlc"
+    "spotify"
 )
 
 log_file="arch-install.log"
@@ -31,17 +33,33 @@ log() {
   echo -e "$1" | tee -a "$log_file"
 }
 
+# Function to handle errors
+handle_error() {
+  log "$CER - An error occurred. Exiting..."
+  exit 1
+}
+
+# Function to install packages with error handling
+install_packages() {
+  local packages=("$@")
+  yay -S --answerdiff=None --noconfirm "${packages[@]}" | tee -a "$log_file" || {
+    log "$CER - Failed to install packages."
+    handle_error
+  }
+  log "$COK - Successfully installed packages."
+}
+
 clear
 
 if ! command -v yay &> /dev/null; then
     log "$CAT - yay is not installed. Installing..."
   
     # Install yay using yay's official installation command
-    git clone https://aur.archlinux.org/yay.git
-    cd yay
-    makepkg -si --noconfirm
-    cd ..
-    rm -rf yay
+    git clone https://aur.archlinux.org/yay.git || handle_error
+    cd yay || handle_error
+    makepkg -si --noconfirm || handle_error
+    cd .. || handle_error
+    rm -rf yay || handle_error
     log "$COK - successfully installed yay. Continuing with the script."
 fi
 log "$CNT - yay is already installed"
@@ -55,13 +73,12 @@ read accept_changes
 
 if [[ $accept_changes == "y" || $accept_changes == "Y" ]]; then
   log "$CPR - Installing packages..."
-  yay -S --answerdiff=None --noconfirm "${yay_packages[@]}" | tee -a "$log_file"
-  log "$COK - Successfully installed packages."
-elif [ $accept_changes == "n"]; then
+  install_packages "${yay_packages[@]}"
+elif [[ $accept_changes == "n" || $accept_changes == "N" ]]; then
   log "$CER - User did not accept changes. Exiting..."
   exit 1
 else 
-    log "$CWE - Continuining script. Not this can cause bugs..."
+  log "$CWE - Continuing script. Note that this can cause bugs..."
 fi
 
 clear
@@ -106,12 +123,13 @@ if [[ $zsh_config == "y" || $zsh_config == "Y" ]]; then
     zsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     log "$COK - Completed ohmyzsh install"
     echo -e "$CNT - You can find built-in ohmyzsh themes here: https://github.com/ohmyzsh/ohmyzsh/wiki/Themes"
+    log "$CNT - Starting ohmyzsh theme configuration"
     echo -e "$CIN - Which theme would you like to use?"
     read new_theme
 
     log "$CNT - Loading default config now"
     # Update the Zsh configuration file
-    sed -i "s/^ZSH_THEME=.*/ZSH_THEME=\"$new_theme\"/" ~/.zshrc
+    sed -i "s/^ZSH_THEME=.*/ZSH_THEME=\"$new_theme\"/" ~/.zshrc || handle_error
 
     log "$COK - Successfully configured ohmyzsh"
     exec zsh
@@ -122,5 +140,6 @@ else
     log "$CER - Option doesn't exist. Exiting..."
     exit 1
 fi
+
 clear
 log "$COK - Script finished successfully. Exiting..."

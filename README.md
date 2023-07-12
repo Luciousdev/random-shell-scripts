@@ -4,7 +4,6 @@ This is a collection of random bash scripts that I've made over the years. They'
 
 Below will be a small tree of the things in the project.
 
-
 * Fixes
   * Steam-blackscreen
 * post linux install
