@@ -29,6 +29,14 @@ yay_packages=(
 
 log_file="arch-install.log"
 
+echo "##########################################################"
+echo "###           ARCH BASED POST INSTALL SCRIPT           ###"
+echo "###                                                    ###"
+echo "###           MADE WITH LOVE BY 'Luciousdev'           ###"
+echo "###                    luciousdev.nl                   ###"
+echo "##########################################################"
+
+echo -e "$CWR - This script requires root privileges!"
 # Function to log output to the log file
 log() {
   echo -e "$1" | tee -a "$log_file"
@@ -50,17 +58,13 @@ install_packages() {
   log "$COK - Successfully installed packages."
 }
 
-clear
+sleep 1
 
 if ! command -v yay &> /dev/null; then
     log "$CAT - yay is not installed. Installing..."
   
     # Install yay using yay's official installation command
-    git clone https://aur.archlinux.org/yay.git || handle_error
-    cd yay || handle_error
-    makepkg -si --noconfirm || handle_error
-    cd .. || handle_error
-    rm -rf yay || handle_error
+    sudo pacman -S --noconfirm yay || handle_error
     log "$COK - successfully installed yay. Continuing with the script."
 fi
 log "$CNT - yay is already installed"
