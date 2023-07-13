@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Set some colors
-CNT="[\033[1;36mNOTE\033[0m]"
-COK="[\033[1;32mOK\033[0m]"
-CER="[\033[1;31mERROR\033[0m]"
-CAT="[\033[1;37mATTENTION\033[0m]"
-CWR="[\033[1;35mWARNING\033[0m]"
-CAC="[\033[1;33mACTION\033[0m]"
-CIN="[\033[1;34mINPUT\033[0m]"
-CDE="[\033[1;37mDEBUG\033[0m]"
-CPR="[\033[1;37mPROGRESS\033[0m]"
+CNT=$(tput setaf 7)$(tput bold)"["$(tput sgr0)$(tput setaf 6)$(tput bold)NOTE$(tput sgr0)$(tput setaf 7)$(tput bold)"]"$(tput sgr0)
+COK=$(tput setaf 7)$(tput bold)"["$(tput sgr0)$(tput setaf 2)$(tput bold)OK$(tput sgr0)$(tput setaf 7)$(tput bold)"]"$(tput sgr0)
+CER=$(tput setaf 7)$(tput bold)"["$(tput sgr0)$(tput setaf 1)$(tput bold)ERROR$(tput sgr0)$(tput setaf 7)$(tput bold)"]"$(tput sgr0)
+CAT=$(tput setaf 7)$(tput bold)"["$(tput sgr0)$(tput setaf 7)$(tput bold)ATTENTION$(tput sgr0)$(tput setaf 7)$(tput bold)"]"$(tput sgr0)
+CWR=$(tput setaf 7)$(tput bold)"["$(tput sgr0)$(tput setaf 5)$(tput bold)WARNING$(tput sgr0)$(tput setaf 7)$(tput bold)"]"$(tput sgr0)
+CAC=$(tput setaf 7)$(tput bold)"["$(tput sgr0)$(tput setaf 3)$(tput bold)ACTION$(tput sgr0)$(tput setaf 7)$(tput bold)"]"$(tput sgr0)
+CIN=$(tput setaf 7)$(tput bold)"["$(tput sgr0)$(tput setaf 4)$(tput bold)INPUT$(tput sgr0)$(tput setaf 7)$(tput bold)"]"$(tput sgr0)
+CDE=$(tput setaf 7)$(tput bold)"["$(tput sgr0)$(tput setaf 7)$(tput bold)DEBUG$(tput sgr0)$(tput setaf 7)$(tput bold)"]"$(tput sgr0)
+CPR=$(tput setaf 7)$(tput bold)"["$(tput sgr0)$(tput setaf 7)$(tput bold)PROGRESS$(tput sgr0)$(tput setaf 7)$(tput bold)"]"$(tput sgr0)
 
 yay_packages=(
     "visual-studio-code-bin" 
@@ -24,6 +24,7 @@ yay_packages=(
     "zsh"
     "vlc"
     "spotify"
+    "xampp"
 )
 
 log_file="arch-install.log"
@@ -71,10 +72,10 @@ done
 log "Do you accept these changes? [y/n/c]"
 read accept_changes
 
-if [[ $accept_changes == "y" || $accept_changes == "Y" ]]; then
+if [[ $accept_changes =~ ^[Yy]$ ]]; then
   log "$CPR - Installing packages..."
   install_packages "${yay_packages[@]}"
-elif [[ $accept_changes == "n" || $accept_changes == "N" ]]; then
+elif [[ $accept_changes =~ ^[Nn]$ ]]; then
   log "$CER - User did not accept changes. Exiting..."
   exit 1
 else 
@@ -90,7 +91,7 @@ echo "#############################################"
 echo "Would you like to configure git? [y/n]"
 read configure_git
 
-if [[ $configure_git == "y" || $configure_git == "Y" ]]; then
+if [[ $configure_git =~ ^[Yy]$ ]]; then
     echo -e "$CIN Please enter your github username:"
     read git_username
     echo -e "$CIN Please enter your github email:"
@@ -101,7 +102,7 @@ if [[ $configure_git == "y" || $configure_git == "Y" ]]; then
     git config --global user.email "$git_email"
 
     log "$COK - Successfully configured git"
-elif [[ $configure_git == "n" || $configure_git == "N" ]]; then
+elif [[ $configure_git =~ ^[Nn]$ ]]; then
     clear
     log "$CWE - Skipped git configuration"
 else 
@@ -118,7 +119,7 @@ echo "#############################################"
 echo "Would you like to configure and install ohmyzsh? [y/n]"
 read zsh_config
 
-if [[ $zsh_config == "y" || $zsh_config == "Y" ]]; then
+if [[ $zsh_config =~ ^[Yy]$ ]]; then
     log "$CNT - Starting ohmyzsh install"
     zsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     log "$COK - Completed ohmyzsh install"
@@ -133,7 +134,7 @@ if [[ $zsh_config == "y" || $zsh_config == "Y" ]]; then
 
     log "$COK - Successfully configured ohmyzsh"
     exec zsh
-elif [[ $zsh_config == "n" || $zsh_config == "N" ]]; then
+elif [[ $zsh_config =~ ^[Nn]$ ]]; then
     clear
     log "$CWE - Skipped zsh configuration"
 else 
@@ -142,4 +143,66 @@ else
 fi
 
 clear
+
+
+echo "#############################################"
+echo "###          FSTAB CONFIGURATION          ###"
+echo "#############################################"
+
+echo "Would you like to setup any SMB shares? [y/n]"
+read fstab_config
+
+if [[ $fstab_config =~ ^[Yy]$ ]]; then
+  # Retrieve info about the SMB share
+  read -p "${CIN} What is the address of your SMB share? (e.g. 192.168.0.10/server) " addres 
+  read -p "${CIN} What is the username of your SMB share? (e.g. user) " username
+  read -p "${CIN} What is the password of your SMB share? (e.g. password123) " password
+  read -p "${CIN} Where would you like to mount the SMB share? (e.g. /home/lucy/mounts/server) " mountpoint
+
+  # Get the group and user id of the current user.
+  uid=$(id -u)
+  gid=$(id -g)
+
+  # Create the mountpoint if it doesn't exist
+  mkdir -p "$mountpoint"
+
+  # Add the mount to fstab
+  fstabline="//$addres $mountpoint cifs username=$username,password=$password,uid=$uid,gid=$gid,noauto,x-systemd.automount,x-systemd.device-timeout=10,rw,file_mode=0755,dir_mode=0755"  
+  echo "$fstabline" | sudo tee -a /etc/fstab >/dev/null
+
+  if [ $? -eq 0 ]; then
+      log "$COK - Added the line to /etc/fstab"
+  else
+      log "$CER - Failed to add the line to /etc/fstab"
+      sleep 2
+      exit 1
+  fi
+
+  # Mount the SMB share using sudo
+  log "$CNT - Attempting to mount all shares"
+  sudo mount -a
+
+  if [ $? -eq 0 ]; then
+      log "$COK - Successfully mounted the SMB share"
+      log "$CWR - Sometimes you might need to restart before you can access your share."
+      sleep 2
+  else
+      log "$COK - Failed to mount the SMB share"
+      sleep 2
+      exit 1
+  fi
+elif [[ $fstab_config =~ ^[Nn]$ ]]; then
+    clear
+    log "$CWE - Skipped fstab configuration"
+else 
+    log "$CER - Option doesn't exist. Exiting..."
+    exit 1
+fi
+
+clear
 log "$COK - Script finished successfully. Exiting..."
+echo -e "$CNT - You can support the project on github https://github.com/Luciousdev/random-shell-scripts
+For questions you can add me on discord 'luciousdev'
+Made with love <3"
+
+exit 0
