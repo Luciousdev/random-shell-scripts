@@ -29,6 +29,8 @@ yay_packages=(
 
 log_file="arch-install.log"
 
+clear
+
 echo "##########################################################"
 echo "###           ARCH BASED POST INSTALL SCRIPT           ###"
 echo "###                                                    ###"
