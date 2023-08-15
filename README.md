@@ -11,6 +11,8 @@ NOTE: most of these work on all linux distro's but some scripts have features sp
   * Tailscale
 * Fixes
   * Steam-blackscreen
+* Nice-to-haves
+  * Hyprland
 * post linux install
   * arch
 * Diagnostic
