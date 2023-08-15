@@ -173,7 +173,7 @@ if [[ $fstab_config =~ ^[Yy]$ ]]; then
   mkdir -p "$mountpoint"
 
   # Add the mount to fstab
-  fstabline="//$addres $mountpoint cifs username=$username,password=$password,uid=$uid,gid=$gid,noauto,x-systemd.automount,x-systemd.device-timeout=10,rw,file_mode=0755,dir_mode=0755"  
+  fstabline="//$addres $mountpoint cifs username=$username,password=$password,uid=$uid,gid=$gid,file_mode=0777,dir_mode=0777,vers=3.0 0 0"  
   echo "$fstabline" | sudo tee -a /etc/fstab >/dev/null
 
   if [ $? -eq 0 ]; then
